@@ -5,7 +5,7 @@ import { DownloadOutlined } from "@ant-design/icons";
 const ExportData = ({ onClick }) => {
   return (
     <Button
-      style={{ width: "10rem " }}
+      style={{ width: "10rem ", height: "3rem" }}
       type="primary"
       shape="round"
       onClick={onClick}

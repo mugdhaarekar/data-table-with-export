@@ -13,28 +13,25 @@ import ExportData from "../ExportData/ExportData";
 import { exportToExcel } from "react-json-to-excel";
 
 const AGGridTable = () => {
-  let [rowData, setRowData] = useState(mockData); // Pass in your data from api
+  const [rowData, setRowData] = useState(mockData); // Pass in your data from api
   const [quickFilter, setQuickFilter] = useState(null);
-  const [statusFilter, setStatusFilter] = useState();
-
-  // const [gridApi, setGridApi] = useState();
-
-  // const onGridReady = (params) => {
-  //   const gridApi = params.api;
-  //   setGridApi(gridApi);
-  // };
+  const [selectAllChecked, setSelectAllChecked] = useState(false);
+  const [selectedRowCount, setSelectedRowCount] = useState(0);
   const gridApiRef = useRef(null);
 
   const onGridReady = (params) => {
     gridApiRef.current = params.api;
   };
+  const onSelectionChanged = useCallback((event) => {
+    const rowCount = event.api.getSelectedNodes().length;
+    setSelectedRowCount(rowCount);
+  }, []);
 
   const columnDefs = [
     {
       field: "",
       headerName: "",
       checkboxSelection: true,
-      headerCheckboxSelection: true,
       pinned: "left",
       maxWidth: 50,
     },
@@ -67,6 +64,7 @@ const AGGridTable = () => {
       headerName: "Price (in Rs.)",
     },
   ];
+
   const gridOptions = {
     defaultColDef: {
       sortable: true,
@@ -75,7 +73,6 @@ const AGGridTable = () => {
       filter: true,
     },
     columnDefs: columnDefs,
-    rowData: rowData,
     animateRows: true,
     pagination: true,
     rowSelection: "multiple",
@@ -85,59 +82,64 @@ const AGGridTable = () => {
 
   const uniqueStatuses = [...new Set(mockData.map((item) => item.status))];
 
-  const updateSelectedCount = () => {
+  const exportSelectedRows = () => {
     const selectedRows = gridApiRef.current.getSelectedNodes();
-    const data = selectedRows.map((rowNode) => rowNode.data);
-    console.log(data, "eow");
+    console.log(selectedRows.length);
+    const data = selectedRows.map((rowNode, index) => {
+      const selectedRowsData = rowNode.data;
+      const extractedData = {};
+      columnDefs.forEach((colDef) => {
+        const headerName = colDef.headerName || "Serial Number";
+        extractedData[headerName] = colDef.headerName
+          ? selectedRowsData[colDef.field]
+          : index + 1;
+      });
+      return extractedData;
+    });
     exportToExcel(data, "DataExport");
   };
 
   const handleStatusFilterChange = (value) => {
-    const statusFilter = gridApiRef.current.getFilterInstance("status");
     const selectedStatus = uniqueStatuses.find((status) => status === value);
     if (selectedStatus) {
-      setStatusFilter(statusFilter);
-      statusFilter.setModel({ values: [value] });
       const filteredRows = mockData.filter(
         (row) => row.status === selectedStatus
       );
-      console.log(filteredRows, "fr");
-      setRowData(() => filteredRows);
-      console.log(rowData, "rd");
+      setRowData(filteredRows);
     } else {
-      statusFilter.setModel(null);
       setRowData(mockData);
     }
-    gridApiRef.current.onFilterChanged();
   };
 
   const uniqueDistribution = [
     ...new Set(mockData.map((item) => item.distribution)),
   ];
 
-  const handleDistributionFilterChange = useCallback(
-    (value) => {
-      const distributionFilter =
-        gridApiRef.current.getFilterInstance("distribution");
-      console.log(distributionFilter, "dustr");
-      const selectedDistribution = uniqueDistribution.find(
-        (distribution) => distribution === value
+  const handleDistributionFilterChange = (value) => {
+    const selectedDistribution = uniqueDistribution.find(
+      (distribution) => distribution === value
+    );
+    if (selectedDistribution) {
+      const filteredDistributionRows = mockData.filter(
+        (row) => row.distribution === selectedDistribution
       );
-      if (selectedDistribution) {
-        distributionFilter.setModel({ values: [value] });
-        const filteredRows = mockData.filter(
-          (row) => row.distribution === selectedDistribution
-        );
-        setRowData(filteredRows);
-      } else {
-        const selectedDistribution = uniqueDistribution;
-        setRowData(mockData);
-      }
+      setRowData(filteredDistributionRows);
+    } else {
+      setRowData(mockData);
+    }
+  };
 
-      gridApiRef.current.onFilterChanged();
-    },
-    [gridApiRef.current, uniqueDistribution, setRowData]
-  );
+  const handleSelectAll = (event) => {
+    if (gridApiRef.current) {
+      const selected = event.target.checked;
+      if (selected) {
+        gridApiRef.current.selectAll();
+      } else {
+        gridApiRef.current.deselectAll();
+      }
+      setSelectAllChecked(selected);
+    }
+  };
 
   return (
     <div className="ag-theme-alpine" style={{ width: "80vw" }}>
@@ -148,27 +150,52 @@ const AGGridTable = () => {
         }}
       >
         <section className="filterSection">
-          <Input
-            style={{ width: "25rem" }}
-            placeholder="Search..."
-            addonBefore={<SearchOutlined />}
-            onInput={(e) => setQuickFilter(e?.target?.value)}
-          />
-          <StatusFilter
-            optionsStatus={uniqueStatuses}
-            handleStatusFilterChange={handleStatusFilterChange}
-          />
-          <DistributionFilter
-            optionsDistribution={uniqueDistribution}
-            handleDistributionFilterChange={handleDistributionFilterChange}
-          />
-          <ExportData onClick={updateSelectedCount} />
+          <div className="selectionFilters">
+            <Input
+              style={{ width: "25rem", marginRight: "1rem" }}
+              placeholder="Search..."
+              addonBefore={<SearchOutlined />}
+              onInput={(e) => setQuickFilter(e?.target?.value)}
+              size="large"
+            />
+            <StatusFilter
+              optionsStatus={uniqueStatuses}
+              handleStatusFilterChange={handleStatusFilterChange}
+            />
+            <DistributionFilter
+              optionsDistribution={uniqueDistribution}
+              handleDistributionFilterChange={handleDistributionFilterChange}
+            />
+          </div>
+          <ExportData onClick={exportSelectedRows} />
         </section>
+        <div
+          className="display_flex"
+          style={{ height: "5rem", alignItems: "center" }}
+        >
+          <input
+            type="checkbox"
+            id="selectAllCheckbox"
+            className="selectAllCheckbox"
+            checked={selectAllChecked}
+            onChange={handleSelectAll}
+          />
+          <label htmlFor="selectAllCheckbox" className="selectAllLabel">
+            <span>
+              ALL ORDERS
+              <span style={{ color: "#999999" }}>
+                ({selectedRowCount} orders selected)
+              </span>
+            </span>
+          </label>
+        </div>
         <AgGridReact
           ref={gridApiRef}
+          rowData={rowData}
           onGridReady={onGridReady}
           gridOptions={gridOptions}
           quickFilterText={quickFilter}
+          onSelectionChanged={onSelectionChanged}
         />
       </div>
     </div>

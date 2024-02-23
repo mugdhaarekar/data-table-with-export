@@ -6,7 +6,8 @@ import mapIcon from "../assets/images/mapIcon.svg";
 export const StatusFilter = ({ optionsStatus, handleStatusFilterChange }) => {
   return (
     <Select
-      style={{ width: "16rem" }}
+      size="large"
+      style={{ width: "16rem", marginRight: "1rem" }}
       label="Status"
       placeholder={
         <span>
@@ -32,6 +33,7 @@ export const DistributionFilter = ({
 }) => {
   return (
     <Select
+      size="large"
       style={{ width: "16rem" }}
       onChange={handleDistributionFilterChange}
       placeholder={
