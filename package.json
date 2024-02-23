@@ -1,0 +1,31 @@
+{
+  "name": "qest-assessment",
+  "version": "1.0.0",
+  "description": "<h3 align=\"center\">Data Table using AG Grid React</h3>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel public/index.html --open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5",
+    "sass": "^1.71.0"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.3.0",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "ag-grid-react": "^31.0.3",
+    "antd": "^5.14.1",
+    "file-saver": "^2.0.5",
+    "first": "^0.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-json-to-excel": "^1.0.7",
+    "src": "^1.1.2",
+    "xlsx": "^0.18.5"
+  }
+}

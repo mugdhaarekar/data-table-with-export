@@ -1,0 +1,44 @@
+div .ag-root-wrapper {
+  border-radius: 20px;
+  overflow: hidden;
+  border: none;
+}
+
+.ag-theme-alpine .ag-header-cell-label {
+  color: #9c9c9c;
+  background-color: #f4f4f4;
+  font-size: 14px;
+}
+div .ag-paging-panel {
+  border-top: none;
+}
+div .ag-header,
+.ag-advanced-filter-header {
+  border-bottom: none;
+}
+div .ag-pinned-left-header,
+div
+  .ag-cell.ag-cell-last-left-pinned:not(.ag-cell-range-right):not(
+    .ag-cell-range-single-cell
+  ) {
+  border-right: none;
+}
+div .ag-row-odd {
+  background-color: #f4f4f4;
+  border: none;
+}
+div :where(.css-dev-only-do-not-override-1xg9z9n).ant-select .ant-select-arrow {
+  color: #157afe;
+}
+div .App {
+  display: flex;
+  justify-content: center;
+}
+.filterSection {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1.5rem;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  background-color: #f4f4f4;
+}
