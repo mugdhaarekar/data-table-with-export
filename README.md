@@ -145,12 +145,12 @@ This project utilizes AG Grid in ReactJS to serve as a Data Table. The functiona
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[product-screenshot]: components/assets/images/product.png
+[product-screenshot]: src/components/assets/images/product.png
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
 [AGGrid.com]: https://img.shields.io/badge/AG_Grid-38903D?style=for-the-badge&logo=ag-grid&logoColor=white
 [AGGrid-url]: https://www.ag-grid.com/
-[AntDesign.com]: (https://img.shields.io/badge/-AntDesign-%230170FE?style=for-the-badge&logo=ant-design&logoColor=white)
+[AntDesign.com]: https://img.shields.io/badge/-AntDesign-%230170FE?style=for-the-badge&logo=ant-design&logoColor=white
 [AntDesign-url]: https://2x.ant.design/
-[Parcel.com]: (https://parceljs.org/avatar.bf8c558d.png)
+[Parcel.com]: https://parceljs.org/avatar.bf8c558d.png
 [Parcel-url]: https://parceljs.org/
