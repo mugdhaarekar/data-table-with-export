@@ -44,7 +44,7 @@ AG-Grid in a React JS application is used as a Data Table. This means it serves 
 - [![React][React.js]][React-url]
 - [![AGGrid][AGGrid.com]][AGGrid-url]
 - [![AntDesign][AntDesign.com]][AntDesign-url]
-- [![Parcel][Parcel.com][Parcel-url]]
+- [![Parcel][Parcel.com]][Parcel-url]
 
 ### Project Structure
 
