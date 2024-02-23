@@ -171,7 +171,7 @@ const AGGridTable = () => {
         </section>
         <div
           className="display_flex"
-          style={{ height: "5rem", alignItems: "center" }}
+          style={{ height: "5rem", alignItems: "center", marginLeft: "1rem" }}
         >
           <input
             type="checkbox"
